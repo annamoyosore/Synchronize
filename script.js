@@ -2,10 +2,8 @@ document.getElementById("Form").addEventListener("submit", async function(e){
 e.preventDefault();
 
 const data = {
-name: document.getElementById("name").value,
-address: document.getElementById("complaint").value,
-dob: document.getElementById("dob").value,
-phone: document.getElementById("phone").value,
+username: document.getElementById("uaername").value,
+complaint: document.getElementById("complaint").value,
 
 };
 
