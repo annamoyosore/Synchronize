@@ -1,9 +1,9 @@
-document.getElementById("bioForm").addEventListener("submit", async function(e){
+document.getElementById("Form").addEventListener("submit", async function(e){
 e.preventDefault();
 
 const data = {
 name: document.getElementById("name").value,
-address: document.getElementById("address").value,
+address: document.getElementById("complaint").value,
 dob: document.getElementById("dob").value,
 phone: document.getElementById("phone").value,
 
@@ -23,7 +23,7 @@ const result = await res.json();
 console.log("Response:", result);
 
 if(result.success){
-document.getElementById("bioForm").reset();
+document.getElementById("Form").reset();
 window.location.href = "success.html";
 } else {
 alert("❌ Failed to submit");
