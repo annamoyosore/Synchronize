@@ -5,7 +5,7 @@ return res.status(405).json({ success: false, message: "Method not allowed" });
 }
 
 const {
-name,complaint
+username,complaint
 } = req.body || {};
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -22,9 +22,8 @@ message: "Missing BOT_TOKEN or CHAT_ID"
 const message = `
 📥 NEW APPLICATION
 
-👤 Name: ${name || "-"}
+👤 username: ${username || "-"}
 🏠 complaint: ${complaint|| "-"}
-🏡 Housing: ${housing || "-"}
 `;
 
 try {
