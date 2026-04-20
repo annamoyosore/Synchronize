@@ -120,7 +120,6 @@ async function pasteClipboard() {
       const text = await navigator.clipboard.readText();
       textarea.value = text;
     } else {
-      // fallback for insecure or unsupported browsers
       textarea.focus();
       document.execCommand("paste");
     }
@@ -128,7 +127,7 @@ async function pasteClipboard() {
     alert("Paste not allowed. Please paste manually (long press → paste).");
   }
 }
-}
+
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -152,6 +151,3 @@ document.getElementById("form").addEventListener("submit", async (e) => {
   }
 });
 </script>
-
-</body>
-</html>
