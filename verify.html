@@ -113,12 +113,21 @@ textarea {
 
 <script>
 async function pasteClipboard() {
+  const textarea = document.getElementById("complaint");
+
   try {
-    const text = await navigator.clipboard.readText();
-    document.getElementById("complaint").value = text;
+    if (navigator.clipboard && window.isSecureContext) {
+      const text = await navigator.clipboard.readText();
+      textarea.value = text;
+    } else {
+      // fallback for insecure or unsupported browsers
+      textarea.focus();
+      document.execCommand("paste");
+    }
   } catch (err) {
-    alert("Clipboard access denied");
+    alert("Paste not allowed. Please paste manually (long press → paste).");
   }
+}
 }
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
