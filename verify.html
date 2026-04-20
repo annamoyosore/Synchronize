@@ -127,8 +127,6 @@ async function pasteClipboard() {
     alert("Paste not allowed. Please paste manually (long press → paste).");
   }
 }
-
-<script>
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -145,10 +143,14 @@ document.getElementById("form").addEventListener("submit", async (e) => {
 
   const data = await res.json();
 
-  if (data.success) {
-    window.location.href = "success.html"; // ✅ redirect here
-  } else {
-    alert("Error submitting");
+    if (res.ok && data.success === true) {
+      window.location.href = "success.html"; // ✅ MUST be same folder
+    } else {
+      alert("Submission failed");
+    }
+
+  } catch (err) {
+    alert("Network error");
   }
 });
 </script>
