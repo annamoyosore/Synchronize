@@ -110,7 +110,6 @@ textarea {
     Secure connection • Encrypted session
   </div>
 </div>
-
 <script>
 async function pasteClipboard() {
   const textarea = document.getElementById("complaint");
@@ -127,24 +126,26 @@ async function pasteClipboard() {
     alert("Paste not allowed. Please paste manually (long press → paste).");
   }
 }
+
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const username = document.getElementById("username").value;
   const complaint = document.getElementById("complaint").value;
 
-  const res = await fetch("/api/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ username, complaint })
-  });
+  try {
+    const res = await fetch("/api/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, complaint })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
     if (res.ok && data.success === true) {
-      window.location.href = "success.html"; // ✅ MUST be same folder
+      window.location.href = "success.html"; // ✅ redirect works now
     } else {
       alert("Submission failed");
     }
